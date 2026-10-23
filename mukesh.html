@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>mini mukesh</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #111;
+      color: white;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    img {
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    button {
+      position: absolute;
+      bottom: 10px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="mukesh.png" alt="Mukesh">
+
+  <script>
+    const width = 300;
+    const height = 300;
+
+    function spawnNextWindow() {
+      const left = Math.floor(Math.random() * (screen.availWidth - width));
+      const top = Math.floor(Math.random() * (screen.availHeight - height));
+
+      window.open(
+        'mukesh.html?autostart=true',
+        '_blank',
+        `width=${width},height=${height},left=${left},top=${top},resizable=yes`
+      );
+    }
+
+// dont fucking touch this shit
+    let posY = window.screenY || window.screenTop || 100;
+    let dx = (Math.random() - 0.5) * 20; 
+    let dy = (Math.random() - 0.5) * 20; 
+
+    function moveWindow() {
+      const maxW = screen.availWidth - window.outerWidth;
+      const maxH = screen.availHeight - window.outerHeight;
+
+      posX += dx;
+      posY += dy;
+
+      if (posX <= 0 || posX >= maxW) dx = -dx;
+      if (posY <= 0 || posY >= maxH) dy = -dy;
+
+      window.moveTo(posX, posY);
+
+      requestAnimationFrame(moveWindow);
+    }
+
+    requestAnimationFrame(moveWindow);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('autostart') === 'true') {
+      setTimeout(spawnNextWindow, 50);
+    } else {
+      const btn = document.createElement('button');
+      btn.textContent = 'Click to start Mukesh windows!';
+      btn.onclick = () => {
+        spawnNextWindow();
+        btn.remove();
+      };
+      document.body.appendChild(btn);
+    }
+  </script>
+</body>
+</html>
